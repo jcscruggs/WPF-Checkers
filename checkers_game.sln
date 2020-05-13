@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "checkers_game", "checkers_game\checkers_game.csproj", "{77C3F267-EF62-4E38-A86B-E9852FD5110E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77C3F267-EF62-4E38-A86B-E9852FD5110E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C3F267-EF62-4E38-A86B-E9852FD5110E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C3F267-EF62-4E38-A86B-E9852FD5110E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C3F267-EF62-4E38-A86B-E9852FD5110E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6143D30-FAEA-41C3-A96C-00D7C4547B3D}
+	EndGlobalSection
+EndGlobal
