@@ -53,6 +53,8 @@ namespace checkers_game
 
         private int row, column, prevRow, prevCol;
 
+        private int p1_check_count, p2_check_count;
+
         #endregion
 
 
@@ -114,6 +116,10 @@ namespace checkers_game
             prevRow = 0;
             prevCol = 0;
 
+            
+            p1_check_count = 12;
+            p2_check_count = 12;
+
 
             int counter = 0;
 
@@ -145,9 +151,9 @@ namespace checkers_game
         } // end new game method
 
 
-        /* helper functions
+        /*
          * 
-         * 
+         * ********************helper functions below*******************
          * 
          */
 
@@ -207,6 +213,7 @@ namespace checkers_game
             });
         }
 
+    
         /* create helper function here to check for further jumps in board array for player 
          * 
          * return will be boolean for if another jump is avaiablle
@@ -214,15 +221,15 @@ namespace checkers_game
          * if return is true then perform actions within ccurrent conditional statements */
 
 
-        private bool p1_jump_available( int row, int col )
+        private bool p1_jump_available(  )
         {
-            if (row - 2 >= 0 && col - 2 >= 0 && Board_array[row - 2, col - 2] == CheckerType.Free && (Board_array[row - 1, col - 1] == CheckerType.P2_check || Board_array[row - 1, col - 1] == CheckerType.P2_king))
+            if (row - 2 >= 0 && column - 2 >= 0 && Board_array[row - 2, column - 2] == CheckerType.Free && (Board_array[row - 1, column - 1] == CheckerType.P2_check || Board_array[row - 1, column - 1] == CheckerType.P2_king))
             {
                 // check if another move can be made by moving left 2 and up 2 more spaces to allow for chain jumps
                 return true;
 
             }
-            else if (row - 2 >= 0 && col + 2 <= 7 && Board_array[row - 2, col + 2] == CheckerType.Free && (Board_array[row - 1, col + 1] == CheckerType.P2_check || Board_array[row - 1, col + 1] == CheckerType.P2_king))
+            else if (row - 2 >= 0 && column + 2 <= 7 && Board_array[row - 2, column + 2] == CheckerType.Free && (Board_array[row - 1, column + 1] == CheckerType.P2_check || Board_array[row - 1, column + 1] == CheckerType.P2_king))
             {
 
                 // check if another move can be made by moving right 2 and up 2 more spaces to allow for chain jumps
@@ -235,15 +242,17 @@ namespace checkers_game
             }
         }
 
-        private bool p2_jump_available(int row, int col)
+        
+
+        private bool p2_jump_available()
         {
 
-            if (row + 2 <= 7 && col + 2 <= 7 && Board_array[row + 2, col + 2] == CheckerType.Free && (Board_array[row + 1, col + 1] == CheckerType.P1_check || Board_array[row + 1, col  +1] == CheckerType.P1_king))
+            if (row + 2 <= 7 && column + 2 <= 7 && Board_array[row + 2, column + 2] == CheckerType.Free && (Board_array[row + 1, column + 1] == CheckerType.P1_check || Board_array[row + 1, column + 1] == CheckerType.P1_king))
             {
                 // check if another move can be made by moving right 2 and down 2 more spaces
                 return true;
             }
-            else if (row + 2 <= 7 && col - 2 >= 0 && Board_array[row + 2, col - 2] == CheckerType.Free && (Board_array[row + 1, col -1] == CheckerType.P1_check || Board_array[row + 1, col - 1] == CheckerType.P1_king))
+            else if (row + 2 <= 7 && column - 2 >= 0 && Board_array[row + 2, column - 2] == CheckerType.Free && (Board_array[row + 1, column - 1] == CheckerType.P1_check || Board_array[row + 1, column - 1] == CheckerType.P1_king))
             {
                 // check if another move can be made by moving left 2 and down 2 more spaces
                 return true;
@@ -257,23 +266,94 @@ namespace checkers_game
 
         }
 
-        private bool Is_kinged(int row, int col, int prevRow, int prevCol)
+        private bool more_king_jump_available()
+        {
+            if (player_one_turn)
+            {
+                if (row - 2 >= 0 && column - 2 >= 0 && Board_array[row - 2, column - 2] == CheckerType.Free && (Board_array[row - 1, column - 1] == CheckerType.P2_check || Board_array[row - 1, column - 1] == CheckerType.P2_king))
+                {
+                    // check if another move can be made by moving left 2 and up 2 more spaces to allow for chain jumps
+                    return true;
+
+                }
+                else if (row - 2 >= 0 && column + 2 <= 7 && Board_array[row - 2, column + 2] == CheckerType.Free && (Board_array[row - 1, column + 1] == CheckerType.P2_check || Board_array[row - 1, column + 1] == CheckerType.P2_king))
+                {
+
+                    // check if another move can be made by moving right 2 and up 2 more spaces to allow for chain jumps
+                    return true;
+                }
+                else if (row + 2 <= 7 && column - 2 >= 0 && Board_array[row + 2, column - 2] == CheckerType.Free && (Board_array[row + 1, column - 1] == CheckerType.P2_check || Board_array[row + 1, column - 1] == CheckerType.P2_king))
+                {
+                    // check if another move can be made by moving left 2 and down 2 more spaces to allow for chain jumps
+                    return true;
+
+                }
+                else if (row + 2 <= 7 && column + 2 <= 7 && Board_array[row + 2, column + 2] == CheckerType.Free && (Board_array[row + 1, column + 1] == CheckerType.P2_check || Board_array[row + 1, column + 1] == CheckerType.P2_king))
+                {
+
+                    // check if another move can be made by moving right 2 and down 2 more spaces to allow for chain jumps
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (row - 2 >= 0 && column - 2 >= 0 && Board_array[row - 2, column - 2] == CheckerType.Free && (Board_array[row - 1, column - 1] == CheckerType.P1_check || Board_array[row - 1, column - 1] == CheckerType.P1_king))
+                {
+                    // check if another move can be made by moving left 2 and up 2 more spaces to allow for chain jumps
+                    return true;
+
+                }
+                else if (row - 2 >= 0 && column + 2 <= 7 && Board_array[row - 2, column + 2] == CheckerType.Free && (Board_array[row - 1, column + 1] == CheckerType.P1_check || Board_array[row - 1, column + 1] == CheckerType.P1_king))
+                {
+
+                    // check if another move can be made by moving right 2 and up 2 more spaces to allow for chain jumps
+                    return true;
+                }
+                else if (row - 2 >= 0 && column - 2 >= 0 && Board_array[row + 2, column - 2] == CheckerType.Free && (Board_array[row + 1, column - 1] == CheckerType.P1_check || Board_array[row + 1, column - 1] == CheckerType.P1_king))
+                {
+                    // check if another move can be made by moving left 2 and down 2 more spaces to allow for chain jumps
+                    return true;
+
+                }
+                else if (row - 2 >= 0 && column + 2 <= 7 && Board_array[row + 2, column + 2] == CheckerType.Free && (Board_array[row + 1, column + 1] == CheckerType.P1_check || Board_array[row + 1, column + 1] == CheckerType.P1_king))
+                {
+
+                    // check if another move can be made by moving right 2 and down 2 more spaces to allow for chain jumps
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+        }
+
+        private bool Is_kinged()
         {
             // player one has reached the top and needs to be kinged
-            if(row == 0)
+            System.Console.WriteLine("is kinged row " + row);
+
+            if (row == 0 && Board_array[prevRow, prevCol] == CheckerType.P1_check )
             {
-                Board_array[row, col] = CheckerType.P1_king;
+                System.Console.WriteLine("should be kinged");
+                Board_array[row, column] = CheckerType.P1_king;
                 Board_array[prevRow,prevCol] = CheckerType.Free;
                
                 updateBoardGui();
                 return true;
                 
             }
-            else if(row == 7)
+            else if(row == 7 && Board_array[prevRow, prevCol] == CheckerType.P2_check)
             {
                 // player two has reached the bottom and needs to be kinged
-                Board_array[row, col] = CheckerType.P2_king;
+                Board_array[row, column] = CheckerType.P2_king;
                 Board_array[prevRow, prevCol] = CheckerType.Free;
+
                 updateBoardGui();
                 return true;
             } 
@@ -284,11 +364,152 @@ namespace checkers_game
             }
         }
 
+        private bool is_normal_king_move()
+        {
+            if(Board_array[row,column] == CheckerType.Free && (row - prevRow == 1 || row - prevRow == -1) && (column - prevCol == 1 || column - prevCol == -1))
+            {
+                System.Console.WriteLine("entered int normal king move");
+                Board_array[row, column] = Board_array[prevRow, prevCol];
+                Board_array[prevRow, prevCol] = CheckerType.Free;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+       private bool is_valid_king_jump()
+       {
+            if (player_one_turn)
+            {
+                // player ones move
+                if (Board_array[row, column] == CheckerType.Free && row - prevRow == 2 && column - prevCol == 2 )
+                {
+                    if(Board_array[row - 1, column - 1] == CheckerType.P2_check || Board_array[row - 1, column - 1] == CheckerType.P2_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else if (Board_array[row, column] == CheckerType.Free && row - prevRow == 2 && column - prevCol == -2)
+                {
+                    if (Board_array[row - 1, column + 1] == CheckerType.P2_check || Board_array[row - 1, column + 1] == CheckerType.P2_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else if (Board_array[row, column] == CheckerType.Free && row - prevRow == -2 && column - prevCol == 2)
+                {
+                    if (Board_array[row + 1, column - 1] == CheckerType.P2_check || Board_array[row + 1, column - 1] == CheckerType.P2_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else if (Board_array[row, column] == CheckerType.Free && row - prevRow == -2 && column - prevCol == -2)
+                {
+                    if (Board_array[row + 1, column + 1] == CheckerType.P2_check || Board_array[row + 1, column + 1] == CheckerType.P2_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // player twos move
+                if (Board_array[row, column] == CheckerType.Free && row - prevRow == 2 && column - prevCol == 2)
+                {
+                    if (Board_array[row - 1, column - 1] == CheckerType.P1_check || Board_array[row - 1, column - 1] == CheckerType.P1_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else if (Board_array[row, column] == CheckerType.Free && row - prevRow == 2 && column - prevCol == -2)
+                {
+                    if (Board_array[row - 1, column + 1] == CheckerType.P1_check || Board_array[row - 1, column + 1] == CheckerType.P1_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else if (Board_array[row, column] == CheckerType.Free && row - prevRow == -2 && column - prevCol == 2)
+                {
+                    if (Board_array[row + 1, column - 1] == CheckerType.P1_check || Board_array[row + 1, column - 1] == CheckerType.P1_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else if (Board_array[row, column] == CheckerType.Free && row - prevRow == -2 && column - prevCol == -2)
+                {
+                    if (Board_array[row + 1, column + 1] == CheckerType.P1_check || Board_array[row + 1, column + 1] == CheckerType.P1_king)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
+       }
+
         private void End_turn()
         {
-            Is_kinged(row, column, prevRow, prevCol);
+            Is_kinged();
+
             players_second_click = !players_second_click;
             player_one_turn = !player_one_turn;
+
+            // after switching players determine current player and display to window
+            if (player_one_turn)
+            {
+                current_player.Text = "Player 1 Turn";
+            }
+            else
+            {
+                current_player.Text = "Player 2 Turn";
+            }
         }
 
         private void invalid_choice()
@@ -297,20 +518,49 @@ namespace checkers_game
             borderChangeBack(prevButton);
         }
 
+        private bool game_over()
+        {
+            if(p1_check_count == 0 || p2_check_count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         /*
-         *
-         * event handler for button press
+         **************** End helper functions***************************
+         * 
+         * 
+         *************** event handler for button press********************
+         *    contains all the game logic for checkers  
          */
         private void Button_Click(object sender, RoutedEventArgs e) {
 
            
             
-            // if the game has ended, clicking any button will reset the board to play again
-            if (game_ended)
+            // if the game has ended, a pop text box will appear to inform the winner
+            // afterwards the game window is closed and the title window is intialized and displayed
+
+            if (game_over())
             {
-                playeronewin = true;
-                return;
+                if(p1_check_count > 0) // player 1 won 
+                {
+                    MessageBoxResult result = MessageBox.Show("PLAYER ONE WINS!", "GAME OVER");
+
+                }
+                else // player 2 won
+                {
+                    MessageBoxResult result = MessageBox.Show("PLAYER TWO WINS!", "GAME OVER");
+                }
+
+                Window1 window = new Window1();
+                this.Visibility = Visibility.Collapsed; // hide current window
+                window.Show(); // show the main window obj
+                this.Close();
             }
 
            
@@ -323,8 +573,8 @@ namespace checkers_game
            
 
             // get row and column of the button pressed so that it can be found within the Board_array and logic can be applied
-            var column = Grid.GetColumn(button);
-            var row = Grid.GetRow(button);
+             column = Grid.GetColumn(button);
+             row = Grid.GetRow(button);
             
            
             
@@ -353,17 +603,18 @@ namespace checkers_game
                         if (Board_array[row, column] == CheckerType.Free && (row - prevRow == -1) && (column - prevCol == -1 || column - prevCol == 1))
                         {
 
-                            if (!Is_kinged(row, column, prevRow, prevCol))
+                            if (!Is_kinged())
                             {
 
 
                                 // the space is free and is a valid movement and not a kinged move
-                                Board_array[row, column] = CheckerType.P1_check;
-                                Board_array[prevRow, prevCol] = CheckerType.Free;
-                                button.Content = "•";
-                                button.Foreground = Brushes.Gold;
-                                borderChangeBack(prevButton);
-                                prevButton.Content = "";
+                                
+                               Board_array[row, column] = CheckerType.P1_check;
+                               Board_array[prevRow, prevCol] = CheckerType.Free;
+                               button.Content = "•";
+                               button.Foreground = Brushes.Gold;
+                               borderChangeBack(prevButton);
+                               prevButton.Content = "";
 
                             }
 
@@ -377,32 +628,43 @@ namespace checkers_game
                             // if an enemy check is open to be jumped
                             if (Board_array[row +1,column +1] == CheckerType.P2_check || Board_array[row + 1, column + 1] == CheckerType.P2_king)
                             {
+                                p2_check_count--; // decrement the amount of player 2 checks
 
                                 // jump enemy checker
-                                Board_array[row, column] = CheckerType.P1_check;
                                 Board_array[row + 1, column + 1] = CheckerType.Free;
                                 
-                                Board_array[prevRow, prevCol] = CheckerType.Free;
 
-                                // reset the button border and update the game board
-                                borderChangeBack(prevButton);
-                                updateBoardGui(); 
-
-                                
-                                if(p1_jump_available(row,column))
+                                if (Is_kinged())
                                 {
-                                    // check if another jump can be made and if so then make current button the previous button and let player go again
-                                    prevButton = button;
-                                    borderChangeOnCLick(button);
-
-                                }
-                                else
-                                {
-                                    // no more valid jumps could be made so players turn is over
-                                  
                                     End_turn();
                                     borderChangeBack(prevButton);
                                 }
+                                else
+                                {
+                                    Board_array[row, column] = CheckerType.P1_check;
+                                    Board_array[prevRow, prevCol] = CheckerType.Free;
+
+                                    // reset the button border and update the game board
+                                    borderChangeBack(prevButton);
+                                    updateBoardGui();
+
+
+                                    if (p1_jump_available())
+                                    {
+                                        // check if another jump can be made and if so then make current button the previous button and let player go again
+                                        prevButton = button;
+                                        borderChangeOnCLick(button);
+
+                                    }
+                                    else
+                                    {
+                                        // no more valid jumps could be made so players turn is over
+
+                                        End_turn();
+                                        borderChangeBack(prevButton);
+                                    }
+                                }
+                                
                             }
                         }
                         else if (Board_array[row, column] == CheckerType.Free && (row - prevRow == -2) && (column - prevCol == 2))
@@ -410,28 +672,40 @@ namespace checkers_game
 
                             if(Board_array[row + 1, column - 1] == CheckerType.P2_check || Board_array[row + 1, column - 1] == CheckerType.P2_king)
                             {
-                                // jump enemy checker from the board
-                                Board_array[row, column] = CheckerType.P1_check;
+                                p2_check_count--; // decrement the amount of player 2 checks
+                                                  // jump enemy checker from the board
+
                                 Board_array[row + 1, column - 1] = CheckerType.Free;
+
+                                if (Is_kinged())
+                                {
                                 
-                                Board_array[prevRow, prevCol] = CheckerType.Free;
-
-                                // reset the button border and update the game board
-                                borderChangeBack(prevButton);
-                                updateBoardGui();
-
-                                if (p1_jump_available(row,column))
-                                {
-                                    // check if another jump can be made and if so then make current button the previous button and let player go again
-                                    prevButton = button;
-                                    borderChangeOnCLick(button);
-
-                                }
-                                else
-                                {
-                                    // no more valid jumps could be made so players turn is over
                                     End_turn();
                                     borderChangeBack(prevButton);
+                                }
+                                else
+                                { // checker was not kinged after jumping check
+                                    Board_array[row, column] = CheckerType.P1_check;
+                                    Board_array[prevRow, prevCol] = CheckerType.Free;
+
+
+                                    // reset the button border and update the game board
+                                    borderChangeBack(prevButton);
+                                    updateBoardGui();
+
+                                    if (p1_jump_available())
+                                    {
+                                        // check if another jump can be made and if so then make current button the previous button and let player go again
+                                        prevButton = button;
+                                        borderChangeOnCLick(button);
+
+                                    }
+                                    else
+                                    {
+                                        // no more valid jumps could be made so players turn is over
+                                        End_turn();
+                                        borderChangeBack(prevButton);
+                                    }
                                 }
 
 
@@ -443,8 +717,61 @@ namespace checkers_game
                             invalid_choice();
                         }
                     }
-                    else { 
+                    else
+                    {
                         // the piece is a king check
+                        if (is_normal_king_move())
+                        {
+                            button.Content = "♛";
+                            button.Foreground = Brushes.Gold;
+
+                            prevButton.Content = "";
+
+                            borderChangeBack(prevButton);
+
+                            End_turn();
+
+                        }else if (is_valid_king_jump())
+                        {
+                            p2_check_count--; // decrement the amount of player 2 checks
+
+                            // calculate the row and column of the jumped piece from any direction 
+                            // this is because the king can move from any direction
+                            // example: row = 5 prevRow = 7: then 5 + ((5 - 7) * -.5) = 6, which is the row of the jumped check
+                            int jumped_row = (int)(row + ((row - prevRow) * -.5));
+                            int jumped_col = (int)(column + ((column - prevCol) * -.5));
+
+
+                            Board_array[row, column] = CheckerType.P1_king;
+
+                            System.Console.WriteLine("value of jumped piece " + (jumped_row) + "  " + ( jumped_col));
+                            Board_array[jumped_row,  jumped_col] = CheckerType.Free;
+
+                            Board_array[prevRow, prevCol] = CheckerType.Free;
+
+                            borderChangeBack(prevButton);
+                            updateBoardGui();
+
+                            if (more_king_jump_available())
+                            {
+                                // check if another jump can be made and if so then make current button the previous button and let player go again
+                                prevButton = button;
+                                borderChangeOnCLick(button);
+
+                            }
+                            else
+                            {
+                                // no more valid jumps could be made so players turn is over
+
+                                End_turn();
+                                borderChangeBack(prevButton);
+                            }
+                        }
+                        else
+                        {
+                            invalid_choice();
+                        }
+                        
                     }
                     
 
@@ -454,6 +781,7 @@ namespace checkers_game
 
                 else {
 
+                    
                     // if the button clicked is owned by player 1 check or king then allow for movement
                     if (Board_array[row, column] == CheckerType.P1_check || Board_array[row, column] == CheckerType.P1_king)
                     {
@@ -479,7 +807,7 @@ namespace checkers_game
                     {
                         if (Board_array[row, column] == CheckerType.Free && (row - prevRow == 1) && (column - prevCol == -1 || column - prevCol == 1))
                         {
-                            if (!Is_kinged(row, column, prevRow, prevCol))
+                            if (!Is_kinged())
                             {
                                 Board_array[row, column] = CheckerType.P2_check;
 
@@ -500,16 +828,63 @@ namespace checkers_game
                             // the check in between previous button and current button is a player 1 check or king 
                             if(Board_array[row - 1, column + 1] == CheckerType.P1_check || Board_array[row - 1, column + 1] == CheckerType.P1_king)
                             {
+                                p1_check_count--; // decrement the amount of player 1 checks
+
+                                Board_array[row - 1, column + 1] = CheckerType.Free;
+                                
+
+                                if (Is_kinged())
+                                {
+                                    End_turn();
+                                    borderChangeBack(prevButton);
+                                }
+                                else
+                                {
+
+                                    Board_array[row, column] = CheckerType.P2_check;
+                                    Board_array[prevRow, prevCol] = CheckerType.Free;
+
+
+                                    borderChangeBack(prevButton);
+                                    updateBoardGui();
+
+                                    if (p2_jump_available())
+                                    {
+                                        borderChangeOnCLick(button);
+                                        prevButton = button;
+                                    }
+                                    else
+                                    {
+                                        End_turn();
+                                        borderChangeBack(prevButton);
+                                    }
+                                }
+                            }
+                        }
+                        else if (Board_array[row, column] == CheckerType.Free && (row - prevRow == 2) && column - prevCol == 2)
+                        {
+
+                            p1_check_count--; // decrement the amount of player 1 checks
+
+                            Board_array[row - 1, column - 1] = CheckerType.Free;
+                            
+
+                            if (Is_kinged())
+                            {
+                                End_turn();
+                                borderChangeBack(prevButton);
+                            }
+                            else
+                            {
+
 
                                 Board_array[row, column] = CheckerType.P2_check;
-                                Board_array[row - 1, column + 1] = CheckerType.Free;
                                 Board_array[prevRow, prevCol] = CheckerType.Free;
-
 
                                 borderChangeBack(prevButton);
                                 updateBoardGui();
 
-                                if (p2_jump_available(row, column))
+                                if (p2_jump_available())
                                 {
                                     borderChangeOnCLick(button);
                                     prevButton = button;
@@ -519,29 +894,6 @@ namespace checkers_game
                                     End_turn();
                                     borderChangeBack(prevButton);
                                 }
-
-                            }
-                        }
-                        else if (Board_array[row, column] == CheckerType.Free && (row - prevRow == 2) && column - prevCol == 2)
-                        {
-
-                            Board_array[row, column] = CheckerType.P2_check;
-                            Board_array[row - 1, column - 1] = CheckerType.Free;
-                            Board_array[prevRow, prevCol] = CheckerType.Free;
-
-
-                            borderChangeBack(prevButton);
-                            updateBoardGui();
-
-                            if (p2_jump_available(row, column))
-                            {
-                                borderChangeOnCLick(button);
-                                prevButton = button;
-                            }
-                            else
-                            {
-                                End_turn();
-                                borderChangeBack(prevButton);
                             }
 
                         }
@@ -554,15 +906,70 @@ namespace checkers_game
                     else
                     {
                         // piece chosen was a P2 king 
+                        if (is_normal_king_move())
+                        {
+                            button.Content = "♚";
+                            button.Foreground = Brushes.Violet;
+
+                            prevButton.Content = "";
+
+                            borderChangeBack(prevButton);
+
+                            End_turn();
+
+                        }
+                        else if (is_valid_king_jump())
+                        {
+                            p1_check_count--; // decrement the amount of player 1 checks
+
+
+                            // calculate the row and column of the jumped piece from any direction 
+                            // this is because the king can move from any direction
+                            // example: row = 5 prevRow = 7: then 5 + ((5 - 7) * -.5) = 6, which is the row of the jumped check
+
+                            int jumped_row = (int)(row + ((row - prevRow) * -.5));
+                            int jumped_col = (int)(column + ((column - prevCol) * -.5));
+
+
+                            Board_array[row, column] = CheckerType.P2_king;
+
+                            System.Console.WriteLine("value of jumped piece " + (row + jumped_row) + "  " + (column + jumped_col));
+                            Board_array[jumped_row, jumped_col] = CheckerType.Free;
+
+                            Board_array[prevRow, prevCol] = CheckerType.Free;
+
+                            borderChangeBack(prevButton);
+                            updateBoardGui();
+
+
+                            if (more_king_jump_available())
+                            {
+                                // check if another jump can be made and if so then make current button the previous button and let player go again
+                                prevButton = button;
+                                borderChangeOnCLick(button);
+
+                            }
+                            else
+                            {
+                                // no more valid jumps could be made so players turn is over
+
+                                End_turn();
+                                borderChangeBack(prevButton);
+                            }
+                        }
+                        else
+                        {
+                            invalid_choice();
+                        }
                     }
                 }
                // this is the players first click
                 else
                 {
+                    current_player.Text = "Player 2 Turn";
 
-
-                  // if the button clicked is owned by player 2 check or king then allow for movement
-                  if (Board_array[row, column] == CheckerType.P2_check || Board_array[row, column] == CheckerType.P2_king)
+                    // if the button clicked is owned by player 2 check or king then allow for movement
+                    if (Board_array[row, column] == CheckerType.P2_check || Board_array[row, column] == CheckerType.P2_king)
                   {
                       prevButton = button;  // save the current button so it can be accessed in the second click
                       players_second_click = true;

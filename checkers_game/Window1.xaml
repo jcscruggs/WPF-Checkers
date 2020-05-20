@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:checkers_game"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        Title="WPF Checkers" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth ="800" MaxWidth="800">
     <Grid>
         <Grid Margin="0,0,366.6,0">
             <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0">
