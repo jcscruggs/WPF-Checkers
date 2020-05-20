@@ -5,21 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:checkers_game"
         mc:Ignorable="d"
-        Title="WPF CHECKERS" Height="800" Width="800" Background="{DynamicResource WindowBackgroundBrush}">
-  <Window.Resources>
-    <Style TargetType="Button">
-      <Setter Property="FontSize" Value="70"/>
-    </Style>
+        Title="WPF CHECKERS" Height="800" MinHeight="800" MaxHeight="800" Width="800" MinWidth="800" MaxWidth="800" Background="{DynamicResource WindowBackgroundBrush}" >
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="70"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Georgia"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
 
-    <LinearGradientBrush x:Key="WindowBackgroundBrush">
-      <GradientStop Offset="0" Color="Purple"/>
-      <GradientStop Offset=".5" Color="Red"/>
-      <GradientStop Offset="1" Color="Blue"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Georgia"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+
+        </Style>  
+        <LinearGradientBrush x:Key="WindowBackgroundBrush">
+      <GradientStop Offset="0" Color="Cyan"/>
+      <GradientStop Offset=".5" Color="GreenYellow"/>
+      <GradientStop Offset="1" Color="CadetBlue"/>
     </LinearGradientBrush>
 
 
   </Window.Resources>
 
+    
   <Grid x:Name="Container" Margin="0,0,32.6,0.4">
     <Grid x:Name ="Board" Margin="0,0,118,1" >
 
@@ -89,18 +102,14 @@
     </Grid>
 
     <Grid Margin="643,0,-33,0" >
-      <Label x:Name ="p1_checkers" Content="Label" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="68" Margin="0,102,-0.2,0" VerticalAlignment="Top" Width="151" />
-      <Label x:Name ="p2_checkers" Content="Label" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="68" Margin="0,629,-0.2,0" VerticalAlignment="Top" Width="151" />
+      <Label x:Name ="p1_checkers" Content="Player 2" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="68" Margin="0,102,-0.2,0" VerticalAlignment="Top" Width="151"  />
+      <Label x:Name ="p2_checkers" Content="Player 1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="68" Margin="0,629,-0.2,0" VerticalAlignment="Top" Width="151" />
 
 
-      <Button Height="100" Width="100">
-        <StackPanel>
-          <Image Source="download.jpg" />
-
-        </StackPanel>
-      </Button>
+      <TextBlock x:Name="current_player" TextWrapping="Wrap" TextAlignment="Center" Height="100" Width="100" Margin="23,333,27.8,336.6">
+       Player 1 turn
+      </TextBlock>
     </Grid>
-    <Label Content="Label" HorizontalAlignment="Left" Margin="-79,172,0,0" VerticalAlignment="Top"/>
 
-  </Grid>
+    </Grid>
 </Window>
