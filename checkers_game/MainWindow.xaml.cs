@@ -21,27 +21,14 @@ namespace checkers_game
     public partial class MainWindow : Window
     {
         #region private variables
-        // holds the current values inside of each white tile on the board
+        // creates a 2D array that holds the current placement of all checks on the board. this is used to validate player moves
         private CheckerType [,] Board_array;
 
-        /// <summary>
-        /// this variable holds a boolean value for player one.
-        /// True if player one is currently playing 
-        /// false other wise
-        /// this variable is toggled within the button method 
-        /// </summary>
+        // holds boolean variable to keep track of which player is currently playing
         private bool player_one_turn;
 
         // variable will be toggled to true if the players first click is a button containing a checker belonging to them
         private bool players_second_click;
-
-        // variable is toggled on if one of the players checkers are all gone
-        private bool game_ended;
-
-        // contains a string which is the name of the winner "player 1" or "player 2"
-        private string winner;
-
-        private bool playeronewin;
 
         // iterable type of buttons
 
@@ -51,18 +38,33 @@ namespace checkers_game
 
         private Button prevButton;
 
+        // Grid row and column of current button and previous button pressed. 
+
         private int row, column, prevRow, prevCol;
 
         private int p1_check_count, p2_check_count;
+
+        // variables for color of checkers
+        private Brush p1_color;
+        private Brush p2_color;
 
         #endregion
 
 
 
-        public MainWindow()
+        public MainWindow(Brush p1_color, Brush p2_color)
         {
             InitializeComponent();
+            this.p1_color = p1_color;
+            this.p2_color = p2_color;
+
+            
+            p1_identifier.Foreground = p1_color;
+            p2_identifier.Foreground = p2_color;
+
             NewGame();
+           
+
         }
 
         private void NewGame()
@@ -107,8 +109,7 @@ namespace checkers_game
             } // end of building board
 
             // intialize each of the private variables
-            game_ended = false;
-            winner = "";
+            
             player_one_turn = true; // player one is current player
             players_second_click = false;
             row = -1;
@@ -123,21 +124,21 @@ namespace checkers_game
 
             int counter = 0;
 
-            // loop through each button and set to intial setup
+            // loop through each button and set to intial setup using lambda function
             buttonList.ForEach(button =>
 
             // for player 2 buttons. fill with checkers images (top three rows of the board)
             { if (counter < 12) 
                 {
                     button.Content = "•";
-                    button.Foreground = Brushes.Violet;
+                    button.Foreground = p2_color;
                     counter++;
                 }
                 // for player 1 buttons. fill with checkers images (bottom three rows of the board)
                 else if (counter >= 20 && counter < 32)
                 {
                     button.Content = "•";
-                    button.Foreground = Brushes.Gold;
+                    button.Foreground = p1_color;
                     counter++;
                 }
                 else {
@@ -187,22 +188,22 @@ namespace checkers_game
                 if (Board_array[row,col] == CheckerType.P1_check)
                 {
                     button.Content = "•";
-                    button.Foreground = Brushes.Gold;
+                    button.Foreground = p1_color;
                 }
                 else if(Board_array[row,col] == CheckerType.P1_king)
                 {
                     button.Content = "♛";
-                    button.Foreground = Brushes.Gold;
+                    button.Foreground = p1_color;
                 }
                 else if(Board_array[row,col] == CheckerType.P2_check)
                 {
                     button.Content = "•";
-                    button.Foreground = Brushes.Violet;
+                    button.Foreground = p2_color;
                 }
                 else if(Board_array[row,col] == CheckerType.P2_king)
                 {
                     button.Content = "♚";
-                    button.Foreground = Brushes.Violet;
+                    button.Foreground = p2_color;
                 }
                 else
                 {
@@ -214,13 +215,9 @@ namespace checkers_game
         }
 
     
-        /* create helper function here to check for further jumps in board array for player 
-         * 
-         * return will be boolean for if another jump is avaiablle
-         * 
-         * if return is true then perform actions within ccurrent conditional statements */
-
-
+       
+        // function that determines if more jumps are available after the intial jump. 
+        // will return true if any are found and returns false otherwise
         private bool p1_jump_available(  )
         {
             if (row - 2 >= 0 && column - 2 >= 0 && Board_array[row - 2, column - 2] == CheckerType.Free && (Board_array[row - 1, column - 1] == CheckerType.P2_check || Board_array[row - 1, column - 1] == CheckerType.P2_king))
@@ -242,8 +239,9 @@ namespace checkers_game
             }
         }
 
-        
 
+        // function that determines if more jumps are available after the intial jump. 
+        // will return true if any are found and returns false otherwise
         private bool p2_jump_available()
         {
 
@@ -266,6 +264,8 @@ namespace checkers_game
 
         }
 
+        // function is similar to P1_jump_available() but checks if jumps are avaible in any of the four directions.
+        // this function is used for both players since kings can move in any direction no matter the owner
         private bool more_king_jump_available()
         {
             if (player_one_turn)
@@ -333,6 +333,7 @@ namespace checkers_game
 
         }
 
+        // function to check if check has been moved to a part of the board that allows them to be kinged.
         private bool Is_kinged()
         {
             // player one has reached the top and needs to be kinged
@@ -364,11 +365,13 @@ namespace checkers_game
             }
         }
 
+        // a function created to adhere to DRY principles since kings move in any direction no matter the owner
+
         private bool is_normal_king_move()
         {
             if(Board_array[row,column] == CheckerType.Free && (row - prevRow == 1 || row - prevRow == -1) && (column - prevCol == 1 || column - prevCol == -1))
             {
-                System.Console.WriteLine("entered int normal king move");
+                
                 Board_array[row, column] = Board_array[prevRow, prevCol];
                 Board_array[prevRow, prevCol] = CheckerType.Free;
                 return true;
@@ -378,6 +381,8 @@ namespace checkers_game
                 return false;
             }
         }
+
+        // function that checks if the attempted jump by the king is valid depending on the player
 
        private bool is_valid_king_jump()
        {
@@ -494,9 +499,10 @@ namespace checkers_game
             
        }
 
+
         private void End_turn()
         {
-            Is_kinged();
+            Is_kinged(); // check to make sure that the final move made by the player is a kinged move or not
 
             players_second_click = !players_second_click;
             player_one_turn = !player_one_turn;
@@ -540,8 +546,8 @@ namespace checkers_game
          */
         private void Button_Click(object sender, RoutedEventArgs e) {
 
-           
             
+
             // if the game has ended, a pop text box will appear to inform the winner
             // afterwards the game window is closed and the title window is intialized and displayed
 
@@ -584,21 +590,15 @@ namespace checkers_game
             {
                 // player has clicked on piece belonging to them and wants to move it
                 if (players_second_click)
-                {
-                    System.Console.WriteLine(row + "," + column + "previous " + Grid.GetRow(prevButton) + "," + Grid.GetColumn(prevButton));
+                { 
 
-
-                    // check if piece is a valid movement from the first. also check if it is open
-                    // if a piece is there then check if it is a enemies piece
-
-                    // if invalid movement then flip boolean to go back to choosing first checker to move
-
-                    // if a piece is jumped then a new check needs to be made to see if another jump can be made to allow for multijump moves
                      prevRow = Grid.GetRow(prevButton);
                      prevCol = Grid.GetColumn(prevButton);
                     if (Board_array[prevRow, prevCol] == CheckerType.P1_check)
                     {
                         // the piece is a normal check
+
+                        // check if player made a normal move
 
                         if (Board_array[row, column] == CheckerType.Free && (row - prevRow == -1) && (column - prevCol == -1 || column - prevCol == 1))
                         {
@@ -612,7 +612,7 @@ namespace checkers_game
                                Board_array[row, column] = CheckerType.P1_check;
                                Board_array[prevRow, prevCol] = CheckerType.Free;
                                button.Content = "•";
-                               button.Foreground = Brushes.Gold;
+                               button.Foreground = p1_color;
                                borderChangeBack(prevButton);
                                prevButton.Content = "";
 
@@ -680,6 +680,7 @@ namespace checkers_game
                                 if (Is_kinged())
                                 {
                                 
+                                    // check was kinged so it is end of players turn
                                     End_turn();
                                     borderChangeBack(prevButton);
                                 }
@@ -723,7 +724,7 @@ namespace checkers_game
                         if (is_normal_king_move())
                         {
                             button.Content = "♛";
-                            button.Foreground = Brushes.Gold;
+                            button.Foreground = p1_color;
 
                             prevButton.Content = "";
 
@@ -814,7 +815,7 @@ namespace checkers_game
                                 Board_array[prevRow, prevCol] = CheckerType.Free;
 
                                 button.Content = "•";
-                                button.Foreground = Brushes.Violet;
+                                button.Foreground = p2_color;
                                 borderChangeBack(prevButton);
                                 prevButton.Content = "";
                             }
@@ -909,7 +910,7 @@ namespace checkers_game
                         if (is_normal_king_move())
                         {
                             button.Content = "♚";
-                            button.Foreground = Brushes.Violet;
+                            button.Foreground = p2_color;
 
                             prevButton.Content = "";
 
