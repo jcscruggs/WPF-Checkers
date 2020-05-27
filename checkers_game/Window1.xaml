@@ -6,19 +6,30 @@
         xmlns:local="clr-namespace:checkers_game"
         mc:Ignorable="d"
         Title="WPF Checkers" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth ="800" MaxWidth="800">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="WindowBackgroundBrush">
+            <GradientStop Offset="0" Color="DarkCyan"/>
+            <GradientStop Offset=".5" Color="Cyan"/>
+            <GradientStop Offset="1" Color="LightGray"/>
+        </LinearGradientBrush>
+    </Window.Resources>
     <Grid>
-        <Grid Margin="0,0,366.6,0">
-            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0">
-            <Image Source ="WPFcheckerscover-PixTeller.png" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="419" Margin="0.2,0.2,0,-1.6" RenderTransformOrigin="0.553,0.498"/>
-        </Border>
+        <Grid Margin="0,0,370.6,0" Background="AliceBlue">
+            <Border BorderBrush="Black" BorderThickness="1" Height="420" VerticalAlignment="Top" Margin="0,0,-371,0" RenderTransformOrigin="0.538,0.511">
+                <Image Source ="WPFcheckerscover-PixTeller.png" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="419" Margin="-0.8,-0.8,0,-1.6" RenderTransformOrigin="0.553,0.498"/>
+            </Border>
         </Grid>
-        <Grid Margin="427,0,-0.4,0">
+        <Grid Margin="415,0,-0.4,0" Background = "{DynamicResource WindowBackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="334*"/>
                 <ColumnDefinition Width="33*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="PLAY CHECKERS" Click ="start_game" HorizontalAlignment="Left" Height="31" Margin="119,57,0,0" VerticalAlignment="Top" Width="130"/>
-            <Button Content="options" HorizontalAlignment="Left" Height="31" Margin="119,142,0,0" VerticalAlignment="Top" Width="130"/>
+            <Button Content="PLAY CHECKERS" Click ="start_game" Foreground="Black" Background="Transparent" FontFamily="Verdana" FontSize="12" FontWeight="Bold" HorizontalAlignment="Left" Height="54" Margin="96,149,0,0" VerticalAlignment="Top" Width="176"/>
+            <Button Click="options" Content="Options" Foreground="Black" Background="Transparent" FontFamily="Verdana" FontSize="12" FontWeight="Bold" HorizontalAlignment="Left" Height="31" Margin="119,263,0,0" VerticalAlignment="Top" Width="130"/>
+
+
+            <Border BorderBrush="Black" BorderThickness="3" CornerRadius="3" HorizontalAlignment="Left" Height="54" Margin="96,149,0,0" VerticalAlignment="Top" Width="176"/>
+            <Border BorderBrush="Black" BorderThickness="3" CornerRadius="3" HorizontalAlignment="Left" Height="31" Margin="119,263,0,0" VerticalAlignment="Top" Width="130"/>
 
 
         </Grid>
