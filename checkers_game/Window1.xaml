@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:checkers_game"
         mc:Ignorable="d"
-        Title="WPF Checkers" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth ="800" MaxWidth="800">
+        Title="WPF Checkers" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth ="800" MaxWidth="800" Icon="WPFcheckerscover-PixTeller.ico">
     <Window.Resources>
         <LinearGradientBrush x:Key="WindowBackgroundBrush">
             <GradientStop Offset="0" Color="DarkCyan"/>
