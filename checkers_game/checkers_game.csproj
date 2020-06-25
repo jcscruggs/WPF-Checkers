@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>WPFcheckerscover-PixTeller.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -110,10 +113,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="download.jpg" />
+    <Resource Include="WPFcheckerscover-PixTeller.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="WPFcheckerscover-PixTeller.png" />
+    <Resource Include="WPFcheckerscover-PixTeller.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
